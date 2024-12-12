@@ -2,9 +2,13 @@
 import { HfInference } from "@huggingface/inference";
 import express, { json } from 'express';
 import { config } from 'dotenv';
+import {cors} from 'cors'
 
 // Load environment variables from .env file
 config();
+
+// Enable CORS for all domains
+app.use(cors());
 
 const app = express();
 const port = process.env.PORT || 3000;
