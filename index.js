@@ -2,7 +2,7 @@
 import { HfInference } from "@huggingface/inference";
 import express, { json } from 'express';
 import { config } from 'dotenv';
-import {cors} from 'cors'
+import cors from 'cors'
 
 // Load environment variables from .env file
 config();
