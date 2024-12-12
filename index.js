@@ -1,7 +1,6 @@
 // server.js
 import { HfInference } from "@huggingface/inference";
 import express, { json } from 'express';
-import { post } from 'axios';
 import { config } from 'dotenv';
 
 // Load environment variables from .env file
