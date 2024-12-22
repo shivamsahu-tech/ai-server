@@ -22,22 +22,36 @@ const client = new HfInference(process.env.API_KEY);
 // Endpoint to generate a script based on the prompt
 app.post('/generate-script', async (req, res) => {
   const { prompt } = req.body;
+  const nonce = req.headers['x-nonce'];
   
-  try {
-    // const chatCompletion = await client.chatCompletion({
-    //   model: "Qwen/Qwen2.5-Coder-32B-Instruct",
-    //   messages: [
-    //     { role: "user", content: prompt }
-    //   ],
-    // });
+  // try {
+  //   const chatCompletion = await client.chatCompletion({
+  //     model: "Qwen/Qwen2.5-Coder-32B-Instruct",
+  //     messages: [
+  //       { role: "user", content: prompt }
+  //     ],
+  //   });
 
-    // const generatedScript = chatCompletion.choices[0].message.content;
+  //   const generatedScript = chatCompletion.choices[0].message.content;
+    
+  //   // Return the generated script wrapped in a <script> tag
+  //   res.setHeader("Content-Security-Policy", "script-src 'nonce-123456'");
+  //   res.send(`
+  //     <script nonce="123456">
+  //       ${generatedScript}
+  //     </script>
+  //   `);
+  // } catch (error) {
+  //   console.log("Error: ", error);
+  //   res.status(500).send({ error: 'Failed to process AI request' });
+  // }
+  try {
     const generatedScript = `document.body.style.backgroundColor = "green";`
     
-    // Return the generated script wrapped in a <script> tag
-    res.setHeader("Content-Security-Policy", "script-src 'nonce-123456'");
+    // Use the received nonce in the response
+    res.setHeader("Content-Security-Policy", `script-src 'nonce-${nonce}'`);
     res.send(`
-      <script nonce="123456">
+      <script nonce="${nonce}">
         ${generatedScript}
       </script>
     `);
@@ -45,6 +59,8 @@ app.post('/generate-script', async (req, res) => {
     console.log("Error: ", error);
     res.status(500).send({ error: 'Failed to process AI request' });
   }
+
+  
 });
 
 app.listen(port, () => {
